@@ -38,11 +38,35 @@ public class Image {
             }
         }
 
+    public void chagneBrihtness(int value){
+        int szerokosc = image.getWidth();
+        int wysokosc = image.getHeight();
+
+        for (int i = 0; i < szerokosc; i++) {
+            for (int j = 0; j < wysokosc; j++) {
+                int rgb = image.getRGB(i, j);
+                int czerwony = (rgb >> 16) & 0xFF;
+                int zielony = (rgb >> 8) & 0xFF;
+                int niebieski = rgb & 0xFF;
+
+                czerwony = Math.min(255, czerwony + value);
+                zielony = Math.min(255, zielony + value);
+                niebieski = Math.min(255, niebieski + value);
+
+                int nowyRgb = (czerwony << 16) | (zielony << 8) | niebieski;
+                image.setRGB(i, j, nowyRgb);
+            }
+        }
+    }
+
+
 
     public static void main(String[] args) {
         Image image = new Image();
 
         image.loadImage("C:\\Users\\joann\\Desktop\\test.jpg");
+        image.chagneBrihtness(128);
         image.saveImage("C:\\Users\\joann\\Desktop\\test2.jpg", "jpg");
+
     }
 }
