@@ -63,14 +63,64 @@ public class Image {
         System.out.println("Czas trwania: " + (endTime - timeStart));
     }
 
+    public void chagneBrihtness2(int value){
+        long timeStart = System.currentTimeMillis();
+        int szerokosc = image.getWidth();
+        int wysokosc = image.getHeight();
+        int liczbaRdzeni = Runtime.getRuntime().availableProcessors();
+//        int liczbaRdzeni = 1;
+        System.out.println("liczbaRdzeni " + liczbaRdzeni);
+
+        int iloscWierszyNaWatek = wysokosc/liczbaRdzeni;
+        System.out.println("iloscWierszyNaWatek " + iloscWierszyNaWatek);
+
+        for(int w = 0; w<liczbaRdzeni; w++) {
+         int poczatkowyWiersz = w * iloscWierszyNaWatek;
+            System.out.println("poczatkowyWiersz " + poczatkowyWiersz);
+
+            new Thread({
+
+                odpalWatekRozjasniania(image, iloscWierszyNaWatek, szerokosc, value, poczatkowyWiersz);
+
+            }).start();
+        }
+
+        long endTime = System.currentTimeMillis();
+        System.out.println("Czas trwania: " + (endTime - timeStart));
+    }
+
+    private void odpalWatekRozjasniania(BufferedImage image, long iloscWierszyNaWatek, int szerokosc, int value, int poczatek) {
+        System.out.println("zaczynam od " + poczatek);
+        for(int i = 0; i<szerokosc; i++){
+            for(int j = poczatek; j<poczatek + iloscWierszyNaWatek; j++){
+                System.out.println(poczatek +"  - i  " + i + " j " + j);
+                int rgb = image.getRGB(i, j);
+                int czerwony = (rgb >> 16) & 0xFF;
+                int zielony = (rgb >> 8) & 0xFF;
+                int niebieski = rgb & 0xFF;
+
+                czerwony = Math.min(255, czerwony + value);
+                zielony = Math.min(255, zielony + value);
+                niebieski = Math.min(255, niebieski + value);
+
+                int nowyRgb = (czerwony << 16) | (zielony << 8) | niebieski;
+                image.setRGB(i, j, nowyRgb);
+            }
+
+
+
+        }
+
+    }
 
 
     public static void main(String[] args) {
         Image image = new Image();
 
         image.loadImage("C:\\Users\\joann\\Desktop\\test.jpg");
-        image.chagneBrihtness(128);
-        image.saveImage("C:\\Users\\joann\\Desktop\\test2.jpg", "jpg");
+       // image.chagneBrihtness(128);
+        image.chagneBrihtness2(128);
+        image.saveImage("C:\\Users\\joann\\Desktop\\test3.jpg", "jpg");
 
     }
 }
