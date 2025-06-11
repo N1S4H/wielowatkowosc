@@ -56,6 +56,7 @@ public class Image {
                 int nowyRgb = (czerwony << 16) | (zielony << 8) | niebieski;
                 image.setRGB(i, j, nowyRgb);
             }
+
         }
     }
 
