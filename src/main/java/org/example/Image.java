@@ -39,6 +39,7 @@ public class Image {
         }
 
     public void chagneBrihtness(int value){
+        long timeStart = System.currentTimeMillis();
         int szerokosc = image.getWidth();
         int wysokosc = image.getHeight();
 
@@ -58,6 +59,8 @@ public class Image {
             }
 
         }
+        long endTime = System.currentTimeMillis();
+        System.out.println("Czas trwania: " + (endTime - timeStart));
     }
 
 
